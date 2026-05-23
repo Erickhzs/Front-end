@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGA - Painel do Aluno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-hamburguer">
+        <span class="icon-open"><i class="bi bi-list"></i></span>
+        <span class="icon-close"><i class="bi bi-x-lg"></i></span>
+    </label>
+    <label for="menu-toggle" class="overlay-sidebar"></label>
+
+    <div class="layout-principal">
+        <nav class="sidebar">
+            <a href="painel_aluno.html" class="logo-sidebar">
+                <i class="bi bi-mortarboard-fill"></i><span>SGA</span>
+            </a>
+            <ul class="menu-navegacao">
+                <li><a href="#boletim" class="ativo" onclick="showSection('boletim', this)"><i class="bi bi-journal-text"></i><span>Meu Boletim</span></a></li>
+                <li><a href="#turmas" onclick="showSection('turmas', this)"><i class="bi bi-diagram-3"></i><span>Turmas Matriculadas</span></a></li>
+                <li><a href="#carteirinha" onclick="showSection('carteirinha', this)"><i class="bi bi-person-badge"></i><span>Carteirinha Digital</span></a></li>
+                <li><a href="#avisos" onclick="showSection('avisos', this)"><i class="bi bi-bell"></i><span>Mural de Avisos</span></a></li>
+                <li><a href="#calendario" onclick="showSection('calendario', this)"><i class="bi bi-calendar-event"></i><span>Calendário Acadêmico</span></a></li>
+                <li><a href="#documentos" onclick="showSection('documentos', this)"><i class="bi bi-file-earmark-pdf"></i><span>Documentos</span></a></li>
+            </ul>
+            <div class="rodape-sidebar">SGA v1.0 - Aluno</div>
+        </nav>
+
+        <div class="conteudo-principal">
+            <header class="topo-header">
+                <div class="breadcrumb-custom"><strong>Painel do Aluno</strong> / Área Exclusiva</div>
+                <div class="info-usuario">
+                    <span>Bem-vindo(a), <strong>Aluno</strong></span>
+                    <div class="avatar">A</div>
+                    <a href="#" onclick="fazerLogout(event)" class="btn-sair"><i class="bi bi-box-arrow-right"></i> Sair</a>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Seção de Perfil Principal (Sempre Visível no Topo) -->
+                <div class="row mb-4" id="perfil">
+                    <div class="col-12">
+                        <div class="card-dashboard p-4" style="background-color: var(--cor-branca); border-radius: var(--border-radius); box-shadow: var(--sombra-card);">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="avatar" style="width: 70px; height: 70px; font-size: 2rem; background: var(--cor-primaria); color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 50%;">A</div>
+                                <div>
+                                    <h4 class="fw-bold mb-1" style="color: var(--cor-primaria);">Olá, <span id="painel-aluno-nome"></span>!</h4>
+                                    <p class="text-muted mb-0">Matrícula: <strong id="painel-aluno-matricula"></strong> | E-mail: <strong id="painel-aluno-email"></strong> | Status: <span class="badge bg-success">Regularmente Matriculado</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Boletim -->
+                <div class="row" id="boletim">
+                    <div class="col-12">
+                        <section class="tabela-custom p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold m-0" style="color: var(--cor-primaria);">
+                                    <i class="bi bi-card-text me-2"></i>Meu Boletim Oficial
+                                </h5>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                                    <i class="bi bi-printer-fill me-1"></i>Imprimir Boletim
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Turma / Disciplina</th>
+                                            <th>Nota 1</th>
+                                            <th>Nota 2</th>
+                                            <th>Média</th>
+                                            <th>Situação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-meu-boletim">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Turmas -->
+                <div class="row mb-4" id="turmas">
+                    <div class="col-12">
+                        <section class="tabela-custom p-3">
+                            <h5 class="fw-bold mb-3" style="color: var(--cor-primaria);">
+                                <i class="bi bi-diagram-3 me-2"></i>Minhas Turmas Ativas
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Turma</th>
+                                            <th>Disciplina</th>
+                                            <th>Professor</th>
+                                            <th>Sala / Turno</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-minhas-turmas">
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Carteirinha -->
+                <div class="row mb-4" id="carteirinha">
+                    <div class="col-12">
+                        <h5 class="fw-bold mb-3" style="color: var(--cor-primaria);"><i class="bi bi-person-badge me-2"></i>Carteirinha de Estudante Digital</h5>
+                        <div class="carteirinha-card d-flex align-items-center">
+                            <div class="carteirinha-foto" id="cart-foto">A</div>
+                            <div>
+                                <h5 class="mb-0 fw-bold" id="cart-nome">Nome do Aluno</h5>
+                                <small class="text-light opacity-75">SISTEMA DE GESTÃO ACADÊMICA</small><br>
+                                <small><strong>Matrícula:</strong> <span id="cart-mat">12345</span></small><br>
+                                <small><strong>Nascimento:</strong> <span id="cart-nasc">00/00/0000</span></small><br>
+                                <small><strong>Validade:</strong> 12/2026</small>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-3" onclick="window.print()"><i class="bi bi-printer me-2"></i>Imprimir Carteirinha</button>
+                    </div>
+                </div>
+
+                <!-- Seção de Avisos -->
+                <div class="row mb-4" id="avisos">
+                    <div class="col-12">
+                        <section class="card-dashboard p-4">
+                            <h5 class="fw-bold mb-4" style="color: var(--cor-primaria);"><i class="bi bi-bell me-2"></i>Mural de Avisos da Secretaria</h5>
+                            
+                            <div class="aviso-card p-3 mb-3 shadow-sm">
+                                <h6 class="fw-bold text-danger mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i>Renovação de Matrícula</h6>
+                                <p class="mb-0 text-muted small">Atenção alunos! O prazo para a renovação de matrícula do próximo semestre se encerra no final deste mês. Não perca a data.</p>
+                            </div>
+
+                            <div class="aviso-card p-3 mb-3 shadow-sm" style="border-left-color: #3498db;">
+                                <h6 class="fw-bold mb-1" style="color: #3498db;"><i class="bi bi-info-circle-fill me-2"></i>Carteirinhas Disponíveis</h6>
+                                <p class="mb-0 text-muted small">As carteirinhas físicas de estudante já estão disponíveis para retirada na secretaria acadêmica em horário comercial.</p>
+                            </div>
+
+                            <div class="aviso-card p-3 shadow-sm" style="border-left-color: #2ecc71;">
+                                <h6 class="fw-bold mb-1" style="color: #2ecc71;"><i class="bi bi-calendar-check-fill me-2"></i>Feriado Nacional</h6>
+                                <p class="mb-0 text-muted small">Informamos que não haverá aulas na próxima quinta e sexta-feira devido ao feriado nacional. Bom descanso!</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Calendário Acadêmico -->
+                <div class="row mb-4" id="calendario">
+                    <div class="col-12">
+                        <section class="tabela-custom p-3">
+                            <h5 class="fw-bold mb-3" style="color: var(--cor-primaria);"><i class="bi bi-calendar-event me-2"></i>Calendário Acadêmico 2026</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Evento / Prazo</th>
+                                            <th>Situação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>15/02</td><td>Início do Semestre Letivo</td><td><span class="badge bg-secondary">Concluído</span></td></tr>
+                                        <tr><td>10/04 a 15/04</td><td>Semana de Provas (P1)</td><td><span class="badge bg-secondary">Concluído</span></td></tr>
+                                        <tr><td>20/06 a 25/06</td><td>Semana de Provas (P2)</td><td><span class="badge bg-warning text-dark">Em Breve</span></td></tr>
+                                        <tr><td>30/06</td><td>Data Limite para Lançamento de Notas</td><td><span class="badge bg-warning text-dark">Em Breve</span></td></tr>
+                                        <tr><td>05/07 a 10/07</td><td>Período de Exames Finais (Recuperação)</td><td><span class="badge bg-warning text-dark">Em Breve</span></td></tr>
+                                        <tr><td>15/07</td><td>Encerramento do Semestre</td><td><span class="badge bg-warning text-dark">Em Breve</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Documentos -->
+                <div class="row mb-4" id="documentos">
+                    <div class="col-12">
+                        <section class="card-dashboard p-4">
+                            <h5 class="fw-bold mb-4" style="color: var(--cor-primaria);"><i class="bi bi-file-earmark-pdf me-2"></i>Emissão de Documentos</h5>
+                            <p class="text-muted mb-4">Gere digitalmente os documentos oficiais da instituição. Eles já vêm com autenticação digital válida.</p>
+                            
+                            <div class="d-flex flex-wrap gap-3">
+                                <button class="btn btn-outline-primary" onclick="alert('Gerando Declaração de Matrícula (PDF)...')">
+                                    <i class="bi bi-file-earmark-text me-2"></i>Declaração de Matrícula
+                                </button>
+                                <button class="btn btn-outline-success" onclick="alert('Gerando Histórico Escolar (PDF)...')">
+                                    <i class="bi bi-file-earmark-ruled me-2"></i>Histórico Escolar Parcial
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="alert('Gerando Comprovante de Imposto de Renda...')">
+                                    <i class="bi bi-file-earmark-medical me-2"></i>Informe de Rendimentos
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            </main>
+            <footer class="rodape">&copy; 2026 SGA - Todos os direitos reservados.</footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function showSection(id, element) {
+            // Esconde todas as seções
+            const sections = ['boletim', 'turmas', 'carteirinha', 'avisos', 'calendario', 'documentos'];
+            sections.forEach(sec => {
+                const el = document.getElementById(sec);
+                if(el) el.style.display = 'none';
+            });
+            
+            // Mostra a seção desejada
+            document.getElementById(id).style.display = 'flex';
+            document.getElementById('perfil').style.display = 'flex'; // Perfil fica sempre visível no topo
+
+            // Atualiza classe ativa no menu
+            document.querySelectorAll('.menu-navegacao a').forEach(a => a.classList.remove('ativo'));
+            element.classList.add('ativo');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Esconde tudo, exceto o boletim inicial
+            const sections = ['turmas', 'carteirinha', 'avisos', 'calendario', 'documentos'];
+            sections.forEach(sec => {
+                const el = document.getElementById(sec);
+                if(el) el.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

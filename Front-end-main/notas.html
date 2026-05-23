@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGA - Notas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-hamburguer">
+        <span class="icon-open"><i class="bi bi-list"></i></span>
+        <span class="icon-close"><i class="bi bi-x-lg"></i></span>
+    </label>
+    <label for="menu-toggle" class="overlay-sidebar"></label>
+
+    <div class="layout-principal">
+        <nav class="sidebar">
+            <a href="dashboard.html" class="logo-sidebar"><i class="bi bi-mortarboard-fill"></i><span>SGA</span></a>
+            <ul class="menu-navegacao">
+                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a></li>
+                <li><a href="alunos.html"><i class="bi bi-people-fill"></i><span>Alunos</span></a></li>
+                <li><a href="professores.html"><i class="bi bi-person-workspace"></i><span>Professores</span></a></li>
+                <li><a href="disciplinas.html"><i class="bi bi-book-fill"></i><span>Disciplinas</span></a></li>
+                <li><a href="turmas.html"><i class="bi bi-diagram-3-fill"></i><span>Turmas</span></a></li>
+                <li><a href="notas.html" class="ativo"><i class="bi bi-clipboard-check-fill"></i><span>Notas</span></a></li>
+            </ul>
+            <div class="rodape-sidebar">SGA v1.0</div>
+        </nav>
+
+        <div class="conteudo-principal">
+            <header class="topo-header">
+                <div class="breadcrumb-custom"><strong>Notas</strong> / Lançamento</div>
+                <div class="info-usuario">
+                    <span>Bem-vindo(a), <strong>Administrador</strong></span>
+                    <div class="avatar">A</div>
+                    <a href="#" onclick="fazerLogout(event)" class="btn-sair"><i class="bi bi-box-arrow-right"></i> Sair</a>
+                </div>
+            </header>
+
+            <main class="main-content">
+
+                <section class="form-container mb-5">
+                    <h2 class="titulo-form"><i class="bi bi-pencil-square me-2"></i>Lançar Notas</h2>
+
+                    <form onsubmit="return cadastrarNota()" id="form-nota">
+                        <div class="mb-3">
+                            <label class="form-label">Turma *</label>
+                            <select class="form-select" id="turma-select" required>
+                                <option value="">Selecione...</option>
+                                <option value="T01 - Programação Web">T01 - Programação Web</option>
+                                <option value="T02 - Banco de Dados">T02 - Banco de Dados</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Aluno *</label>
+                            <select class="form-select" id="aluno-select" required>
+                                <option value="">Carregando...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nota 1 *</label>
+                            <input type="number" class="form-control" id="nota1" min="0" max="10" step="0.1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nota 2 *</label>
+                            <input type="number" class="form-control" id="nota2" min="0" max="10" step="0.1" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary px-4 py-2 fw-bold">
+                            <i class="bi bi-check-circle-fill me-2"></i>Registrar Nota
+                        </button>
+                    </form>
+                </section>
+
+                <section class="tabela-custom p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <h5 class="fw-bold m-0" style="color: var(--cor-primaria);">
+                            <i class="bi bi-table me-2"></i>Notas Lançadas
+                        </h5>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" id="pesquisa-notas" placeholder="Pesquisar nota..." onkeyup="pesquisarTabela('pesquisa-notas', 'tabela-notas')">
+                            </div>
+                            <button class="btn btn-sm btn-success text-nowrap shadow-sm" onclick="exportarCSV(STORAGE_KEYS.NOTAS, 'relatorio_notas')">
+                                <i class="bi bi-file-earmark-excel me-1"></i>Exportar CSV
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr><th>Aluno</th><th>Turma</th><th>Nota 1</th><th>Nota 2</th><th>Média</th><th>Situação</th><th>Ações</th></tr>
+                            </thead>
+                            <tbody id="tabela-notas"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </main>
+
+            <footer class="rodape">&copy; 2026 SGA</footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

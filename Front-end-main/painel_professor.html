@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGA - Painel do Professor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-hamburguer">
+        <span class="icon-open"><i class="bi bi-list"></i></span>
+        <span class="icon-close"><i class="bi bi-x-lg"></i></span>
+    </label>
+    <label for="menu-toggle" class="overlay-sidebar"></label>
+
+    <div class="layout-principal">
+        <nav class="sidebar">
+            <a href="painel_professor.html" class="logo-sidebar">
+                <i class="bi bi-mortarboard-fill"></i><span>SGA</span>
+            </a>
+            <ul class="menu-navegacao">
+                <li><a href="#diario" class="ativo" onclick="showSection('diario', this)"><i class="bi bi-pencil-square"></i><span>Diário de Classe</span></a></li>
+                <li><a href="#turmas" onclick="showSection('turmas', this)"><i class="bi bi-diagram-3"></i><span>Minhas Turmas</span></a></li>
+                <li><a href="#relatorio" onclick="showSection('relatorio', this)"><i class="bi bi-pie-chart-fill"></i><span>Desempenho Geral</span></a></li>
+                <li><a href="#materiais" onclick="showSection('materiais', this)"><i class="bi bi-folder2-open"></i><span>Material de Apoio</span></a></li>
+                <li><a href="#avisos" onclick="showSection('avisos', this)"><i class="bi bi-bell"></i><span>Mural da Coordenação</span></a></li>
+            </ul>
+            <div class="rodape-sidebar">SGA v1.0 - Professor</div>
+        </nav>
+
+        <div class="conteudo-principal">
+            <header class="topo-header">
+                <div class="breadcrumb-custom"><strong>Painel do Professor</strong> / Espaço Docente</div>
+                <div class="info-usuario">
+                    <span>Bem-vindo(a), <strong>Professor</strong></span>
+                    <div class="avatar">P</div>
+                    <a href="#" onclick="fazerLogout(event)" class="btn-sair"><i class="bi bi-box-arrow-right"></i> Sair</a>
+                </div>
+            </header>
+
+            <main class="main-content">
+                
+                <!-- Seção de Perfil (Sempre Visível no Topo) -->
+                <div class="row mb-4" id="perfil">
+                    <div class="col-12">
+                        <div class="card-dashboard p-4" style="background-color: var(--cor-branca); border-radius: var(--border-radius); box-shadow: var(--sombra-card);">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar" style="width: 70px; height: 70px; font-size: 2rem; background: var(--cor-secundaria); color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 50%;">P</div>
+                                    <div>
+                                        <h4 class="fw-bold mb-1" style="color: var(--cor-primaria);">Prof. <span id="painel-prof-nome"></span></h4>
+                                        <p class="text-muted mb-0">Registro (Siape): <strong id="painel-prof-registro"></strong> | Titulação: <strong>Doutorado</strong></p>
+                                    </div>
+                                </div>
+                                <div class="stats-card text-center d-flex gap-4">
+                                    <div>
+                                        <h3 class="fw-bold mb-0" id="prof-total-turmas">0</h3>
+                                        <small class="opacity-75">Turmas Ativas</small>
+                                    </div>
+                                    <div>
+                                        <h3 class="fw-bold mb-0" id="prof-total-notas">0</h3>
+                                        <small class="opacity-75">Notas Lançadas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Diário de Classe (Lançamento de Notas) -->
+                <div class="row" id="diario">
+                    <div class="col-12">
+                        <section class="form-container mb-4">
+                            <h2 class="titulo-form">
+                                <i class="bi bi-pencil-square me-2"></i>Lançar Nota
+                            </h2>
+                            <form onsubmit="return cadastrarNotaProf()" id="form-nota-prof">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Turma *</label>
+                                        <select class="form-select" id="turma-select-prof" required>
+                                            <option value="">Selecione...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Aluno *</label>
+                                        <select class="form-select" id="aluno-select-prof" required>
+                                            <option value="">Selecione...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nota 1 *</label>
+                                        <input type="text" class="form-control" id="nota1-prof" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nota 2 *</label>
+                                        <input type="text" class="form-control" id="nota2-prof" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary px-4 py-2 fw-bold">
+                                    <i class="bi bi-floppy-fill me-2"></i>Salvar Nota no Diário
+                                </button>
+                            </form>
+                        </section>
+
+                        <section class="tabela-custom p-3">
+                            <h5 class="fw-bold mb-3" style="color: var(--cor-primaria);">
+                                <i class="bi bi-list-ul me-2"></i>Pauta de Notas Lançadas
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Aluno</th>
+                                            <th>Turma</th>
+                                            <th>Nota 1</th>
+                                            <th>Nota 2</th>
+                                            <th>Média</th>
+                                            <th>Situação</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-notas-prof"></tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Turmas -->
+                <div class="row mb-4" id="turmas">
+                    <div class="col-12">
+                        <section class="tabela-custom p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold m-0" style="color: var(--cor-primaria);">
+                                    <i class="bi bi-diagram-3 me-2"></i>Turmas sob sua Responsabilidade
+                                </h5>
+                                <button class="btn btn-sm btn-outline-success" onclick="alert('Exportando Excel...')">
+                                    <i class="bi bi-file-earmark-excel me-1"></i>Exportar Lista de Presença
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Código da Turma</th>
+                                            <th>Disciplina Relacionada</th>
+                                            <th>Sala</th>
+                                            <th>Turno</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-prof-turmas">
+                                        <!-- Preenchido via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Relatório (Gráfico de Desempenho) -->
+                <div class="row mb-4" id="relatorio">
+                    <div class="col-12">
+                        <section class="card-dashboard p-4">
+                            <h5 class="fw-bold mb-4" style="color: var(--cor-primaria);"><i class="bi bi-pie-chart-fill me-2"></i>Relatório de Desempenho das Turmas</h5>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6 text-center">
+                                    <p class="text-muted mb-4">Veja a proporção de alunos aprovados e reprovados com base nas notas que você já lançou no sistema.</p>
+                                    <canvas id="graficoDesempenhoProf" style="max-height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Material de Apoio -->
+                <div class="row mb-4" id="materiais">
+                    <div class="col-12">
+                        <section class="card-dashboard p-4">
+                            <h5 class="fw-bold mb-4" style="color: var(--cor-primaria);"><i class="bi bi-cloud-arrow-up-fill me-2"></i>Repositório de Materiais de Aula</h5>
+                            
+                            <form class="mb-4 p-3 rounded" style="background: #f8fafc; border: 1px dashed #cbd5e1;">
+                                <div class="row align-items-end">
+                                    <div class="col-md-5 mb-3 mb-md-0">
+                                        <label class="form-label">Título do Material</label>
+                                        <input type="text" class="form-control" placeholder="Ex: Slides Aula 01">
+                                    </div>
+                                    <div class="col-md-4 mb-3 mb-md-0">
+                                        <label class="form-label">Arquivo</label>
+                                        <input type="file" class="form-control">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-primary w-100 fw-bold" onclick="alert('Upload realizado com sucesso!')"><i class="bi bi-upload me-2"></i>Enviar Arquivo</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Material</th>
+                                            <th>Data de Envio</th>
+                                            <th>Tamanho</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><i class="bi bi-file-earmark-pdf text-danger me-2"></i>Apostila_Capitulo_1.pdf</td><td>10/02/2026</td><td>2.4 MB</td><td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></button></td></tr>
+                                        <tr><td><i class="bi bi-file-earmark-slides text-warning me-2"></i>Apresentacao_Trabalho.pptx</td><td>22/03/2026</td><td>5.1 MB</td><td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></button></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Seção de Avisos -->
+                <div class="row mb-4" id="avisos">
+                    <div class="col-12">
+                        <section class="card-dashboard p-4">
+                            <h5 class="fw-bold mb-4" style="color: var(--cor-primaria);"><i class="bi bi-megaphone-fill me-2"></i>Mural da Coordenação Acadêmica</h5>
+                            
+                            <div class="aviso-prof-card p-3 mb-3 shadow-sm">
+                                <h6 class="fw-bold mb-1"><i class="bi bi-calendar-check me-2"></i>Reunião de Conselho de Classe</h6>
+                                <p class="mb-0 text-muted small">Caros professores, nossa próxima reunião de conselho ocorrerá no dia 15 deste mês às 14h no auditório principal. A pauta incluirá a revisão das ementas.</p>
+                            </div>
+
+                            <div class="aviso-prof-card p-3 mb-3 shadow-sm" style="border-left-color: #e74c3c;">
+                                <h6 class="fw-bold mb-1" style="color: #e74c3c;"><i class="bi bi-exclamation-circle me-2"></i>Prazo para Fechamento de Diário</h6>
+                                <p class="mb-0 text-muted small">Lembramos que o sistema será bloqueado para o lançamento de notas do 1º bimestre na próxima sexta-feira às 23h59. Por favor, regularizem suas pautas.</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            </main>
+            <footer class="rodape">&copy; 2026 SGA - Todos os direitos reservados.</footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function showSection(id, element) {
+            const sections = ['diario', 'turmas', 'relatorio', 'materiais', 'avisos'];
+            sections.forEach(sec => {
+                const el = document.getElementById(sec);
+                if(el) el.style.display = 'none';
+            });
+            
+            document.getElementById(id).style.display = 'flex';
+            document.getElementById('perfil').style.display = 'flex'; 
+
+            document.querySelectorAll('.menu-navegacao a').forEach(a => a.classList.remove('ativo'));
+            element.classList.add('ativo');
+
+            // Recarrega o gráfico se abrir a aba de relatórios
+            if(id === 'relatorio') {
+                if(typeof window.renderizarGraficoProf === 'function') {
+                    window.renderizarGraficoProf();
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = ['turmas', 'relatorio', 'materiais', 'avisos'];
+            sections.forEach(sec => {
+                const el = document.getElementById(sec);
+                if(el) el.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

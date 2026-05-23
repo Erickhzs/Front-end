@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGA - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
+     
+    
+</head>
+<body class="pagina-login">
+
+    <main class="container-login">
+        <header class="logo-login">
+            <i class="bi bi-mortarboard-fill icone-logo" alt="Logotipo SGA"></i>
+            <h1>SGA</h1>
+            <p>Sistema de Gestão Acadêmica</p>
+        </header>
+
+        <form onsubmit="fazerLogin(event)" id="form-login">
+            <div class="mb-3">
+                <label for="perfil" class="form-label">Tipo de Acesso</label>
+                <select class="form-select" id="perfil" onchange="mudarPerfil()" required>
+                    <option value="admin">Administrador</option>
+                    <option value="professor">Professor</option>
+                    <option value="aluno">Aluno</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="usuario" class="form-label" id="label-usuario">Usuário</label>
+                <input type="text" class="form-control" id="usuario" placeholder="Digite seu usuário" required>
+            </div>
+            <div class="mb-4">
+                <label for="senha" class="form-label" id="label-senha">Senha</label>
+                <input type="password" class="form-control" id="senha" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+            </button>
+        </form>
+    </main>
+
+    <script>
+        function mudarPerfil() {
+            const perfil = document.getElementById('perfil').value;
+            const userLabel = document.getElementById('label-usuario');
+            const passLabel = document.getElementById('label-senha');
+            const userInput = document.getElementById('usuario');
+            const passInput = document.getElementById('senha');
+            
+            if(perfil === 'admin') {
+                userLabel.textContent = 'Usuário'; passLabel.textContent = 'Senha';
+                userInput.placeholder = 'Digite seu usuário'; passInput.placeholder = '••••••••';
+            } else if(perfil === 'professor') {
+                userLabel.textContent = 'Nº de Registro'; passLabel.textContent = 'Senha (Nº de Registro)';
+                userInput.placeholder = 'Ex: 12345'; passInput.placeholder = '••••••••';
+            } else {
+                userLabel.textContent = 'Nº de Matrícula'; passLabel.textContent = 'Senha (Nº de Matrícula)';
+                userInput.placeholder = 'Ex: 98765'; passInput.placeholder = '••••••••';
+            }
+        }
+
+        function fazerLogin(event) {
+            event.preventDefault();
+            const perfil = document.getElementById('perfil').value;
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+            
+            if (perfil === 'admin') {
+                if (usuario === 'admin' && senha === 'admin') {
+                    sessionStorage.setItem('isLogged', 'true');
+                    sessionStorage.setItem('userType', 'admin');
+                    sessionStorage.setItem('userName', 'Administrador');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Credenciais de Administrador inválidas! (Dica: admin / admin)');
+                }
+            } else if (perfil === 'professor') {
+                const professores = JSON.parse(localStorage.getItem('sga_professores')) || [];
+                const prof = professores.find(p => p.registro === usuario && p.registro === senha);
+                if (prof) {
+                    sessionStorage.setItem('isLogged', 'true');
+                    sessionStorage.setItem('userType', 'professor');
+                    sessionStorage.setItem('userId', prof.id);
+                    sessionStorage.setItem('userName', prof.nome);
+                    window.location.href = 'painel_professor.html';
+                } else {
+                    alert('Registro de Professor inválido! (Usuário e Senha = Seu Número de Registro)');
+                }
+            } else if (perfil === 'aluno') {
+                const alunos = JSON.parse(localStorage.getItem('sga_alunos')) || [];
+                const aluno = alunos.find(a => a.matricula === usuario && a.matricula === senha);
+                if (aluno) {
+                    sessionStorage.setItem('isLogged', 'true');
+                    sessionStorage.setItem('userType', 'aluno');
+                    sessionStorage.setItem('userId', aluno.id);
+                    sessionStorage.setItem('userName', aluno.nome);
+                    window.location.href = 'painel_aluno.html';
+                } else {
+                    alert('Matrícula de Aluno inválida! (Usuário e Senha = Seu Número de Matrícula)');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
